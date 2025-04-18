@@ -6,7 +6,7 @@
 
 💞️ Je suis à la recherche de collaborations sur des **projets de développement web**, en particulier ceux utilisant **Vue.js**, **Laravel**, **Next.js**, et **Tailwind CSS**. J'aime travailler sur des **projets liés aux systèmes de gestion de contenu**, aux **applications de suivi de livraison**, et à l'**e-commerce**.
 
-📫 Comment me contacter : Vous pouvez m'envoyer un email à [yanne.kouassi@epitech.eu](mailto:yanne.kouassi@epitech.eu), ou me trouver sur [LinkedIn](https://www.linkedin.com/in/yanne-cedric-wilson-kouassi).
+📫 Comment me contacter : Vous pouvez m'envoyer un email à [yanne.kouassi@epitech.eu](mailto:yanne.kouassi@epitech.eu), ou me trouver sur [LinkedIn](https://www.linkedin.com/in/yanne-cedric-wilson-kouassi-17bb12303).
 
 😄 Pronoms : **Il**
 
