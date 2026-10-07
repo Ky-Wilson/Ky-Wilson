@@ -1,0 +1,61 @@
+# Génère les cartes de statistiques du profil, dépôts privés inclus.
+# Secret requis : METRICS_TOKEN (PAT classique ; repo, read:org, read:user suffisent).
+name: Metrics
+
+on:
+  schedule:
+    - cron: "0 4 * * *" # tous les jours à 4h UTC (= heure d'Abidjan)
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: metrics
+  cancel-in-progress: false
+
+jobs:
+  metrics:
+    runs-on: ubuntu-latest
+    steps:
+      # Action épinglée sur le commit de la release v3.34 pour éviter toute mise à jour non contrôlée.
+      - name: Vue d'ensemble (privés inclus)
+        uses: lowlighter/metrics@65836723097537a54cd8eb90f61839426b4266b6 # v3.34
+        with:
+          filename: metrics/overview.svg
+          token: ${{ secrets.METRICS_TOKEN }}
+          committer_token: ${{ secrets.GITHUB_TOKEN }}
+          user: Ky-Wilson
+          base: header, activity, community, repositories, metadata
+          config_timezone: Africa/Abidjan
+          repositories_affiliations: owner, collaborator, organization_member
+
+      - name: Langages (tous les dépôts)
+        uses: lowlighter/metrics@65836723097537a54cd8eb90f61839426b4266b6 # v3.34
+        with:
+          filename: metrics/languages.svg
+          token: ${{ secrets.METRICS_TOKEN }}
+          committer_token: ${{ secrets.GITHUB_TOKEN }}
+          user: Ky-Wilson
+          base: ""
+          config_timezone: Africa/Abidjan
+          repositories_affiliations: owner, collaborator, organization_member
+          plugin_languages: yes
+          plugin_languages_sections: most-used, recently-used
+          plugin_languages_details: percentage
+          plugin_languages_limit: 10
+          plugin_languages_recent_days: 30
+          # Exclut le balisage et les fichiers générés (templates, builds natifs) qui faussent les proportions.
+          plugin_languages_ignored: html, css, scss, less, blade, twig, handlebars, cmake, c, c++, objective-c, swift, shell, batchfile, dockerfile, procfile
+
+      - name: Calendrier de contributions
+        uses: lowlighter/metrics@65836723097537a54cd8eb90f61839426b4266b6 # v3.34
+        with:
+          filename: metrics/calendar.svg
+          token: ${{ secrets.METRICS_TOKEN }}
+          committer_token: ${{ secrets.GITHUB_TOKEN }}
+          user: Ky-Wilson
+          base: ""
+          config_timezone: Africa/Abidjan
+          plugin_isocalendar: yes
+          plugin_isocalendar_duration: full-year
