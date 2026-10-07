@@ -43,10 +43,11 @@ jobs:
           repositories_affiliations: owner, collaborator, organization_member
           plugin_languages: yes
           plugin_languages_sections: most-used
-          plugin_languages_details: percentage
+          plugin_languages_details: bytes-size, percentage
+          plugin_languages_threshold: 0%
           plugin_languages_limit: 10
           # Exclut le balisage et les fichiers générés (templates, builds natifs) qui faussent les proportions.
-          plugin_languages_ignored: html, css, scss, less, blade, twig, handlebars, cmake, c, c++, objective-c, swift, shell, batchfile, dockerfile, procfile
+          plugin_languages_ignored: html, css, scss, less, blade, twig, handlebars, cmake, c, objective-c, swift, shell, dockerfile
 
       - name: Calendrier de contributions
         uses: lowlighter/metrics@65836723097537a54cd8eb90f61839426b4266b6 # v3.34
