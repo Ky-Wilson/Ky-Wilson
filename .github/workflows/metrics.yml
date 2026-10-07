@@ -30,26 +30,6 @@ jobs:
           config_timezone: Africa/Abidjan
           repositories_affiliations: owner, collaborator, organization_member
 
-      - name: Langages (tous les dépôts)
-        uses: lowlighter/metrics@65836723097537a54cd8eb90f61839426b4266b6 # v3.34
-        with:
-          filename: metrics/languages.svg
-          token: ${{ secrets.METRICS_TOKEN }}
-          committer_token: ${{ secrets.GITHUB_TOKEN }}
-          user: Ky-Wilson
-          base: ""
-          config_timezone: Africa/Abidjan
-          plugin_languages: yes
-          plugin_languages_limit: 10
-          # Analyse les commits réellement écrits (privés inclus) plutôt que les métadonnées des dépôts.
-          plugin_languages_indepth: yes
-          plugin_languages_analysis_timeout: 30
-          plugin_languages_analysis_timeout_repositories: 2
-          plugin_languages_categories: programming
-          plugin_languages_details: percentage
-          # Exclut le balisage et les fichiers générés (templates, builds natifs) qui faussent les proportions.
-          plugin_languages_ignored: html, css, scss, less, blade, twig, handlebars, cmake, c, objective-c, swift, shell, dockerfile
-
       - name: Calendrier de contributions
         uses: lowlighter/metrics@65836723097537a54cd8eb90f61839426b4266b6 # v3.34
         with:
@@ -61,3 +41,22 @@ jobs:
           config_timezone: Africa/Abidjan
           plugin_isocalendar: yes
           plugin_isocalendar_duration: full-year
+
+      # Le plugin "languages" de metrics renvoie une carte vide : la carte est générée par un script maison.
+      - name: Récupère les cartes générées
+        uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - name: Langages (tous les dépôts)
+        env:
+          GH_TOKEN: ${{ secrets.METRICS_TOKEN }}
+        run: python3 .github/scripts/languages.py
+
+      - name: Commit de la carte des langages
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add metrics/languages.svg
+          git diff --cached --quiet || git commit -m "Update metrics/languages.svg - [Skip GitHub Action]"
+          git push
